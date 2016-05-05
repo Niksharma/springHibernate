@@ -1,4 +1,4 @@
-package login;
+package com.springHibernate.controller;
 
 import java.util.Map;
 
@@ -6,15 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.springHibernate.service.UserService;
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
     
 	@Autowired
-	public PersonRepository repository;
+	protected UserService userService;
 	
 	@RequestMapping(method = RequestMethod.POST)
     public boolean login(@RequestBody Map<String, String> loginMap) {
@@ -23,6 +24,6 @@ public class LoginController {
     	if (userName == null || email == null) {
     		return false;
     	}
-        return repository.findByEmailAndUserName(email,userName).stream().count() > 0;
+        return userService.getUser(email,userName) != null;
     }
 }
